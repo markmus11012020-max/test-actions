@@ -1,0 +1,56 @@
+# Git
+.git
+.gitignore
+.gitattributes
+
+# CI/CD
+.github
+.gitlab-ci.yml
+.azure-pipelines.yml
+
+# Python
+__pycache__
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info
+.pytest_cache
+.mypy_cache
+.ruff_cache
+.coverage
+htmlcov/
+.tox/
+.venv
+venv/
+env/
+ENV/
+
+# IDE / Editor
+.idea
+.vscode
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+# Docker
+Dockerfile
+.dockerignore
+docker-compose*.yml
+docker-compose*.yaml
+
+# Docs / Logs
+*.md
+!README.md
+LICENSE
+*.log
+logs/
+
+# Tests / CI artifacts
+tests/
+test/
+.pytest_cache
+htmlcov/
+.tox/
+coverage.xml
