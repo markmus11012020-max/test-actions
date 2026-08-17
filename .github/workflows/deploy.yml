@@ -51,10 +51,23 @@ jobs:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: 22
+          timeout: 15s
+          command_timeout: 10m
+          script_stop: false
           script: |
             set -e
-            echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
-            docker pull ghcr.io/${{ github.repository }}:latest
+            export REGISTRY=ghcr.io
+            export IMAGE_NAME=${{ github.repository }}
+            echo "::group::docker login"
+            echo "${{ secrets.GHCR_PAT }}" | docker login $REGISTRY -u ${{ github.actor }} --password-stdin
+            echo "::endgroup::"
+            echo "::group::docker pull"
+            docker pull $REGISTRY/$IMAGE_NAME:latest
+            echo "::endgroup::"
+            echo "::group::restart container"
             docker stop app || true
             docker rm app || true
-            docker run -d --name app --restart unless-stopped ghcr.io/${{ github.repository }}:latest
+            docker run -d --name app --restart unless-stopped $REGISTRY/$IMAGE_NAME:latest
+            echo "::endgroup::"
+            docker ps --filter "name=app"
